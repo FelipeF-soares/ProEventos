@@ -7,18 +7,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./eventos.component.scss']
 })
 export class EventosComponent implements OnInit {
-
-  public eventos : any;
+private isCollapsed : boolean = false;
+public eventos: any;
+public widthImg: number = 150;
+public marginImg: number = 2;
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.getEventos();
   }
 
-  private getEventos():void{
+  private getEventos(){
     this.http.get('https://localhost:5001/api/eventos').subscribe(
-      response=> this.eventos = response,
-      error=> console.log(error)
+        response=> this.eventos = response,
+        error=> console.log(error)
     );
+  }
+
+  public setCollapsed(){
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  public getCollapsed(){
+    return this.isCollapsed;
   }
 }
