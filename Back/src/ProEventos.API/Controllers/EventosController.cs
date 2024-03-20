@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ProEventos.API.Data;
-using ProEventos.API.Model;
+using ProEventos.Persistence;
+using ProEventos.Domain;
+using ProEventos.Persistence.Contextos;
 
 namespace ProEventos.API.Controllers
 {
@@ -13,11 +14,9 @@ namespace ProEventos.API.Controllers
     [Route("api/[controller]")]
     public class EventosController : ControllerBase
     {
-        private readonly ILogger<EventosController> _logger;
+        public readonly ProEventosContext _context;
 
-        public readonly DataContext _context;
-
-        public EventosController(DataContext context)
+        public EventosController(ProEventosContext context)
         {  
             _context = context;
         }
@@ -25,14 +24,13 @@ namespace ProEventos.API.Controllers
         [HttpGet]
         public IEnumerable<Evento> Get()
         {
-            
             return _context.Eventos;
         }
 
         [HttpGet("{id}")]
         public Evento Get(int id)
         {
-            return _context.Eventos.FirstOrDefault(evento => evento.EventoId.Equals(id));
+            return _context.Eventos.FirstOrDefault(evento => evento.Id.Equals(id));
         }
     }
 }
